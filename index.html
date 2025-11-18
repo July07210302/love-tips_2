@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Love Tips</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: white;
+    font-family: "微软雅黑";
+  }
+
+  .tip-box {
+    position: absolute;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    color: #333;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+
+  #final-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    background: lightpink;
+    font-size: 26px;
+    font-weight: bold;
+    border-radius: 15px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="final-box">💕</div>
+
+<script>
+const tips = [
+  '多喝水哦~','保持微笑呀','每天都要元气满满',
+  '记得吃水果','保持好心情','好好爱自己','我想你了',
+  '梦想成真','期待下一次见面','顺顺利利','早点休息',
+  '愿所有烦恼都消失','别熬夜','今天过得开心嘛','天冷了多穿衣服'
+];
+
+const bgColors = [
+  'lightpink','skyblue','lightgreen','lavender','lightyellow',
+  'plum','coral','bisque','aquamarine','mistyrose',
+  'honeydew','lavenderblush','oldlace'
+];
+
+let allDivs = [];
+
+function createTipDiv() {
+  const div = document.createElement('div');
+  div.className = "tip-box";
+
+  div.textContent = tips[Math.floor(Math.random() * tips.length)];
+  div.style.background = bgColors[Math.floor(Math.random() * bgColors.length)];
+
+  const x = Math.random() * (window.innerWidth - 200);
+  const y = Math.random() * (window.innerHeight - 80);
+
+  div.style.left = x + "px";
+  div.style.top = y + "px";
+
+  document.body.appendChild(div);
+
+  // 延迟让其显示
+  setTimeout(() => {
+    div.style.opacity = 1;
+  }, 10);
+
+  return div;
+}
+
+// 创建 200 个弹框
+for (let i = 0; i < 200; i++) {
+  const d = createTipDiv();
+  allDivs.push(d);
+}
+
+// 2 秒后开始一个一个关闭
+setTimeout(() => {
+  closeOneByOne(0);
+}, 2000);
+
+function closeOneByOne(i) {
+  if (i >= allDivs.length) {
+    showFinal();
+    return;
+  }
+
+  const div = allDivs[i];
+  div.style.opacity = 0;
+
+  setTimeout(() => {
+    div.remove();
+    closeOneByOne(i + 1);
+  }, 10); // 每消失一个就继续下一个
+}
+
+function showFinal() {
+  const final = document.getElementById("final-box");
+  final.style.display = "block";
+  final.style.opacity = 1;
+}
+</script>
+
+</body>
+</html>
